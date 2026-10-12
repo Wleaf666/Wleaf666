@@ -1,29 +1,19 @@
 name: Metrics
 on:
+  # Schedule daily updates
   schedule: [{cron: "0 0 * * *"}]
+  # (optional) Run workflow manually
   workflow_dispatch:
+  # (optional) Run workflow when pushing on master/main
   push: {branches: ["master", "main"]}
-
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
-    timeout-minutes: 8 # 【保护机制】防止任何意外卡死耗尽你的 Action 额度
+    environment: 
+      name: production
     permissions:
       contents: write
     steps:
       - uses: lowlighter/metrics@latest
         with:
-          token: ${{ secrets.token }}
-          
-          # 【已修复】：去掉了尖括号（如果当前仓库就是 Wleaf666 账号下的仓库，这行甚至可以直接删掉）
-          user: Wleaf666
-          
-          template: classic
-          filename: github-metrics.svg
-          
-          base: header, activity, community, repositories, metadata
-          config_timezone: Asia/Shanghai
-
-          # 【稳定性优化】：禁用复杂 CSS 动画并限制网络超时，加快 Puppeteer 渲染速度
-          config_animations: no
-          config_timeout: 20
+          token: ${{ secrets.TOKEN }}
