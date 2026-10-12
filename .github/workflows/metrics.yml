@@ -16,10 +16,10 @@ jobs:
       - uses: lowlighter/metrics@latest
         with:
           # 填入之前配置好的 Secret 变量名
-          token: ${{ secrets.METRICS_TOKEN }}
+          token: ${{ secrets.token }}
           
           # 你的 GitHub 用户名
-          user: <你的GitHub用户名>
+          user: <Wleaf666>
           
           # 模板与输出文件名称（默认生成 github-metrics.svg）
           template: classic
