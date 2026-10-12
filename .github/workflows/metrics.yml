@@ -1,0 +1,32 @@
+name: Metrics
+on:
+  # 定时任务：每天零点自动更新一次
+  schedule: [{cron: "0 0 * * *"}]
+  # 支持手动在 Actions 页面触发执行
+  workflow_dispatch:
+  # 代码推送到主分支时触发（可选）
+  push: {branches: ["master", "main"]}
+
+jobs:
+  github-metrics:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: lowlighter/metrics@latest
+        with:
+          # 填入之前配置好的 Secret 变量名
+          token: ${{ secrets.METRICS_TOKEN }}
+          
+          # 你的 GitHub 用户名
+          user: <你的GitHub用户名>
+          
+          # 模板与输出文件名称（默认生成 github-metrics.svg）
+          template: classic
+          filename: github-metrics.svg
+          
+          # 基础模块（个人信息、活动、仓库等）
+          base: header, activity, community, repositories, metadata
+          
+          # 时区设置
+          config_timezone: Asia/Shanghai
