@@ -16,7 +16,7 @@ jobs:
       - uses: lowlighter/metrics@latest
         with:
           # 填入之前配置好的 Secret 变量名
-          token: ${{ secrets.token }}
+          token: ${{ secrets.TOKEN }}
           
           # 你的 GitHub 用户名
           user: <Wleaf666>
