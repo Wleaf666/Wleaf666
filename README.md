@@ -1,1 +1,1 @@
-[![GitHub Stats](https://github-stats-extended.vercel.app/api?username=Wleaf666&rank_icon=github&show_icons=true&include_all_commits=true&theme=blue_navy)](https://github-stats-extended.vercel.app/api?username=Wleaf666&rank_icon=github&show_icons=true&include_all_commits=true&theme=blue_navy)
+![Metrics](github-metrics.svg)
