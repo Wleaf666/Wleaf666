@@ -1,19 +1,45 @@
 name: Metrics
 on:
-  # Schedule daily updates
   schedule: [{cron: "0 0 * * *"}]
-  # (optional) Run workflow manually
   workflow_dispatch:
-  # (optional) Run workflow when pushing on master/main
   push: {branches: ["master", "main"]}
+
 jobs:
   github-metrics:
     runs-on: ubuntu-latest
-    environment: 
-      name: production
+    timeout-minutes: 10
     permissions:
       contents: write
     steps:
       - uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.TOKEN }}
+          user: Wleaf666
+          template: classic
+          filename: github-metrics.svg
+          base: header, activity, community, repositories, metadata
+          config_timezone: Asia/Shanghai
+
+          # ==================== 1. 最常用编程语言统计 ====================
+          plugin_languages: yes
+          plugin_languages_sections: most-used # 展示最常用语言
+          plugin_languages_details: bytes-size, percentage # 展示字节数和百分比
+          plugin_languages_limit: 8            # 最多显示前 8 种语言
+          plugin_languages_colors: github      # 使用 GitHub 官方语言颜色
+
+          # ==================== 2. 代码行数统计（增/删行数） ====================
+          plugin_lines: yes
+          plugin_lines_history_limit: 1        # 追溯历史年数（默认 1 年）
+
+          # ==================== 3. 开发者成就徽章（类似游戏成就） ====================
+          plugin_achievements: yes
+          plugin_achievements_threshold: B     # 勋章门槛：X, S, A, B, C 等
+          plugin_achievements_secrets: yes     # 包含隐藏成就
+          plugin_achievements_display: compact # 紧凑模式展示
+
+          # ==================== 4. 编码习惯分析（每天/每周打卡时段） ====================
+          plugin_habits: yes
+          plugin_habits_from: 200              # 抽样统计最近 200 次 commit
+          plugin_habits_days: 14               # 统计最近 14 天
+          plugin_habits_facts: yes             # 显示习惯文字描述
+          plugin_habits_charts: yes            # 显示 24 小时活跃度时钟/图表
