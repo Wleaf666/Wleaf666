@@ -11,35 +11,50 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: lowlighter/metrics@latest
+      - name: Generate GitHub Metrics
+        uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.TOKEN }}
           user: Wleaf666
           template: classic
           filename: github-metrics.svg
-          base: header, activity, community, repositories, metadata
           config_timezone: Asia/Shanghai
 
-          # ==================== 1. 最常用编程语言统计 ====================
+          # -------------------- 视觉排版与信息降噪 --------------------
+          # 精简 base：保留 header 与 repositories，剔除大批显示为 0 的空项（如 0 orgs、0 sponsors 等），提升有效信息密度
+          base: header, repositories
+          # 严格定义从上到下的视觉流：个人名片 -> 3D贡献立体天际线 -> 核心语言栈 -> 代码吞吐量 -> 紧凑成就墙
+          config_order: base.header, isocalendar, languages, lines, achievements
+
+          # -------------------- 1. 3D 等轴贡献天际线 (主视觉锚点) --------------------
+          # 替换单调的 2D 平面小方块，采用体素立体的 3D 提交天际线，并自带打卡连胜与日均活跃统计
+          plugin_isocalendar: yes
+          plugin_isocalendar_duration: half-year # 半年跨度比例最协调，兼顾呼吸感与信息量
+
+          # -------------------- 2. 最常用编程语言全景 --------------------
           plugin_languages: yes
-          plugin_languages_sections: most-used # 展示最常用语言
-          plugin_languages_details: bytes-size, percentage # 展示字节数和百分比
-          plugin_languages_limit: 8            # 最多显示前 8 种语言
-          plugin_languages_colors: github      # 使用 GitHub 官方语言颜色
+          plugin_languages_sections: most-used
+          plugin_languages_details: bytes-size, percentage
+          plugin_languages_limit: 8
+          plugin_languages_colors: github
 
-          # ==================== 2. 代码行数统计（增/删行数） ====================
+          # -------------------- 3. 代码产出量统计 --------------------
           plugin_lines: yes
-          plugin_lines_history_limit: 1        # 追溯历史年数（默认 1 年）
+          plugin_lines_history_limit: 2
 
-          # ==================== 3. 开发者成就徽章（类似游戏成就） ====================
+          # -------------------- 4. 开发者成就徽章 (紧凑游戏化展示) --------------------
           plugin_achievements: yes
-          plugin_achievements_threshold: B     # 勋章门槛：X, S, A, B, C 等
-          plugin_achievements_secrets: yes     # 包含隐藏成就
-          plugin_achievements_display: compact # 紧凑模式展示
+          plugin_achievements_display: compact
+          plugin_achievements_threshold: C # 门槛设为 C，完整展示已解锁徽章，避免过度空白
+          plugin_achievements_secrets: yes # 包含探索类隐藏彩蛋
+          # 关键排错：GitHub 已下线 Classic Projects，必须忽略 manager 勋章以防 GraphQL 抛出 Unexpected error
+          plugin_achievements_ignored: manager
 
-          # ==================== 4. 编码习惯分析（每天/每周打卡时段） ====================
-          plugin_habits: yes
-          plugin_habits_from: 200              # 抽样统计最近 200 次 commit
-          plugin_habits_days: 14               # 统计最近 14 天
-          plugin_habits_facts: yes             # 显示习惯文字描述
-          plugin_habits_charts: yes            # 显示 24 小时活跃度时钟/图表
+          # -------------------- 5. (可选) 编码习惯分析 --------------------
+          # 说明：当前 lowlighter 版本的 plugin_habits_charts 在部分事件下会触发 Unexpected error，
+          # 活动节奏已由上方的 3D 日历更高级地展现；如需纯文字习惯描述可按需启用：
+          # plugin_habits: yes
+          # plugin_habits_from: 200
+          # plugin_habits_days: 14
+          # plugin_habits_facts: yes
+          # plugin_habits_charts: no
