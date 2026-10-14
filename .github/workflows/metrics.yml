@@ -11,7 +11,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Generate GitHub Metrics
+      - name: Generate 3D Contribution Skyline
         uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.TOKEN }}
@@ -20,41 +20,9 @@ jobs:
           filename: github-metrics.svg
           config_timezone: Asia/Shanghai
 
-          # -------------------- 视觉排版与信息降噪 --------------------
-          # 精简 base：保留 header 与 repositories，剔除大批显示为 0 的空项（如 0 orgs、0 sponsors 等），提升有效信息密度
-          base: header, repositories
-          # 严格定义从上到下的视觉流：个人名片 -> 3D贡献立体天际线 -> 核心语言栈 -> 代码吞吐量 -> 紧凑成就墙
-          config_order: base.header, isocalendar, languages, lines, achievements
-
-          # -------------------- 1. 3D 等轴贡献天际线 (主视觉锚点) --------------------
-          # 替换单调的 2D 平面小方块，采用体素立体的 3D 提交天际线，并自带打卡连胜与日均活跃统计
+          # -------------------- 纯净 3D 等轴贡献天际线 --------------------
+          # 彻底移除 upstream API 变更导致 Unexpected error 的 plugin_achievements 与 plugin_habits
+          # 仅保留极其稳定、科技感十足的 3D 提交天际线，作为 README 下方的极客视觉锚点
+          base: ""
           plugin_isocalendar: yes
-          plugin_isocalendar_duration: half-year # 半年跨度比例最协调，兼顾呼吸感与信息量
-
-          # -------------------- 2. 最常用编程语言全景 --------------------
-          plugin_languages: yes
-          plugin_languages_sections: most-used
-          plugin_languages_details: bytes-size, percentage
-          plugin_languages_limit: 8
-          plugin_languages_colors: github
-
-          # -------------------- 3. 代码产出量统计 --------------------
-          plugin_lines: yes
-          plugin_lines_history_limit: 2
-
-          # -------------------- 4. 开发者成就徽章 (紧凑游戏化展示) --------------------
-          plugin_achievements: yes
-          plugin_achievements_display: compact
-          plugin_achievements_threshold: C # 门槛设为 C，完整展示已解锁徽章，避免过度空白
-          plugin_achievements_secrets: yes # 包含探索类隐藏彩蛋
-          # 关键排错：GitHub 已下线 Classic Projects，必须忽略 manager 勋章以防 GraphQL 抛出 Unexpected error
-          plugin_achievements_ignored: manager
-
-          # -------------------- 5. (可选) 编码习惯分析 --------------------
-          # 说明：当前 lowlighter 版本的 plugin_habits_charts 在部分事件下会触发 Unexpected error，
-          # 活动节奏已由上方的 3D 日历更高级地展现；如需纯文字习惯描述可按需启用：
-          # plugin_habits: yes
-          # plugin_habits_from: 200
-          # plugin_habits_days: 14
-          # plugin_habits_facts: yes
-          # plugin_habits_charts: no
+          plugin_isocalendar_duration: half-year
