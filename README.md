@@ -1,11 +1,4 @@
-<div align="center">
-
-<!-- 终端风格打字机标语 -->
-<a href="https://git.io/typing-svg">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=39FF14&background=0D111700&center=true&vCenter=true&width=550&lines=%24%20I%20am%20Wleaf%20%F0%9F%91%8B%3B%24%20Embedded%20%26%20Systems%20Developer%20%E2%9A%A1%3B%24%20Focus%20on%20C%2FC%2B%2B%20%C2%B7%20CUDA%20%C2%B7%20STM32%20%F0%9F%9B%A0%EF%B8%8F%3B%24%20Welcome%20to%20my%20GitHub%21%20%E2%9C%A8" alt="Typing SVG" />
-</a>
-
-</div>
+<h1 align="center">Hi, I'm Wleaf 👋</h1>
 
 ---
 
